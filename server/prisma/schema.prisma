@@ -9,3 +9,17 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model seats {
+  id Int @id @default(autoincrement())
+  name String
+  reservation_status reservationStatus @default(IN_PROGRESS)
+  reservation_mail String?
+  reservation_starts DateTime @default(now())
+  reservation_ends DateTime?
+}
+
+enum reservationStatus {
+  IN_PROGRESS
+  RESERVED
+}
