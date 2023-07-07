@@ -10,13 +10,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model seats {
+model Seat {
   id Int @id @default(autoincrement())
   name String
   reservation_status reservationStatus @default(IN_PROGRESS)
   reservation_mail String?
   reservation_starts DateTime @default(now())
   reservation_ends DateTime?
+
+  @@map("seats")
 }
 
 enum reservationStatus {
