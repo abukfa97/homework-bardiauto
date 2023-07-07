@@ -26,3 +26,8 @@ async function saveNewSeat(data: seatInputDTO) {
         console.log(`Failed to create element in db`);
     }
 }
+
+export {
+    getAllSeats,
+    saveNewSeat
+};
