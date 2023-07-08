@@ -33,6 +33,19 @@ async function saveNewSeat(data: seatInputDTO) {
     }
 }
 
+async function deleteSeat(data:seatInputDTO) {
+    try {
+        await prisma.seat.deleteMany({
+            where: {
+                name: data.name,
+            },
+        })
+    } catch (error) {
+        console.error(error);
+        console.log(`Failed to delete element in db with the following name ${data.name}`);
+    }
+}
+
 export {
     getAllSeats,
     saveNewSeat
