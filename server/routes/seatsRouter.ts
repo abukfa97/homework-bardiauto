@@ -1,12 +1,12 @@
 import express, {Router, Request, Response, response} from 'express';
 import {getAllSeats, saveNewSeat} from '../services/userService';
-import { Seat } from '@prisma/client';
+import { Seat, reservationStatus } from '@prisma/client';
 
 const router: Router = express.Router();
 
 router.get('/', async (req: Request, res: Response)=> {
     try{
-        const seats : Seat[] = await getAllSeats();
+        const seats = await getAllSeats();
         res.json(seats);
     }catch(error){
         console.error(error);
@@ -15,12 +15,14 @@ router.get('/', async (req: Request, res: Response)=> {
 });
 
 router.post('/', async (req: Request, res: Response)=> {
+    const {name} = req.body;
     try{
-        const {name} = req.body();
-        const newSeat = await saveNewSeat({name});
-        response.json(newSeat);
+        let seat = await saveNewSeat({name});
+        res.status(200).json(seat);
     }catch(error){
         console.error(error);
         res.status(500).json({error: 'Internal Server Error'});
     }
 });
+
+export default router;

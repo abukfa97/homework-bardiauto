@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, Seat } from "@prisma/client";
+import { PrismaClient, Prisma, Seat, reservationStatus } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +19,7 @@ interface seatInputDTO{
 
 async function saveNewSeat(data: seatInputDTO) {
     try{
-        const newSeat = prisma.seat.create({data});
+        let newSeat = await prisma.seat.create({data});
         return newSeat;
     } catch (error) {
         console.error(error);
