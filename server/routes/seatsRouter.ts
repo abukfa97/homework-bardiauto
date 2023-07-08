@@ -1,6 +1,5 @@
 import express, {Router, Request, Response, response} from 'express';
 import {getAllSeats, saveNewSeat} from '../services/userService';
-import { Seat, reservationStatus } from '@prisma/client';
 
 const router: Router = express.Router();
 
@@ -18,6 +17,7 @@ router.post('/', async (req: Request, res: Response)=> {
     const {name} = req.body;
     try{
         let seat = await saveNewSeat({name});
+        if(!seat) throw new Error("Seat is already existing");
         res.status(200).json(seat);
     }catch(error){
         console.error(error);

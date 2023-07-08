@@ -19,8 +19,14 @@ interface seatInputDTO{
 
 async function saveNewSeat(data: seatInputDTO) {
     try{
-        let newSeat = await prisma.seat.create({data});
-        return newSeat;
+        let x: Boolean = await prisma.seat.count({
+            where:{
+                name: data.name,
+            }}) === 0;
+        if(x) {
+            let newSeat = await prisma.seat.create({data});
+            return newSeat;
+        } else throw new Error("Seat is already existing in the db");
     } catch (error) {
         console.error(error);
         console.log(`Failed to create element in db`);
