@@ -48,5 +48,6 @@ async function deleteSeat(data:seatInputDTO) {
 
 export {
     getAllSeats,
-    saveNewSeat
+    saveNewSeat,
+    deleteSeat,
 };

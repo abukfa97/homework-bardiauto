@@ -1,5 +1,5 @@
 import express, {Router, Request, Response, response} from 'express';
-import {getAllSeats, saveNewSeat} from '../services/userService';
+import {deleteSeat, getAllSeats, saveNewSeat} from '../services/userService';
 
 const router: Router = express.Router();
 
@@ -24,5 +24,16 @@ router.post('/', async (req: Request, res: Response)=> {
         res.status(500).json({error: 'Internal Server Error'});
     }
 });
+
+router.delete('/',async (req: Request,res: Response) => {
+    const {name} = req.body;
+    try {
+        await deleteSeat({name});
+        res.json({message: "Item deleted successfully!"});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+})
 
 export default router;
