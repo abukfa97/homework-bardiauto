@@ -8,13 +8,19 @@ const ReservationProvider =  ({children}) => {
         seats: [],
         mail: "",
         date: new Date()
-    })
+    });
 
     const increaseSeatCount = () => {
-        setReservation({...reservation, seatCounter: seatCounter+1});
-    }
+        setReservation((prevReservation) => ({
+            ...prevReservation,
+            seatCounter: prevReservation.seatCounter + 1
+        }));
+    };
 
     const decreaseSeatCount = () => {
-        setReservation({...reservation, seatCounter: seatCounter > 0 ? seatCounter-1 : 0});
-    }
+        setReservation((prevReservation) => ({
+            ...prevReservation,
+            seatCounter: prevReservation.seatCounter - 1
+        }));
+    };
 }
