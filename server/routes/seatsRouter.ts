@@ -2,14 +2,12 @@ import express, {Router, Request, Response, response} from 'express';
 import seatService from '../services/seatService';
 import ReservationService from '../services/reservationService';
 import mailDetails from '../model/mailDetailsInterface';
-import { reservationStatus } from '@prisma/client';
-import { getMail } from '../mailTemplate/successfulReservation';
 import { reservationDTO } from '../model/reservationDTO';
 
 
 const router: Router = express.Router();
 const service: seatService = new seatService();
-const reservationService: ReservationService = new ReservationService();
+const reservationService: ReservationService = ReservationService.getInstance();
 
 router.get('/', async (req: Request, res: Response)=> {
     try{
@@ -44,25 +42,18 @@ router.delete('/',async (req: Request,res: Response) => {
     }
 });
 
-
-
 router.patch('/finish-reservation',async (req:Request, res: Response) => {
     const dto: reservationDTO  = req.body
-    
-    /*let reservedSeat = {
-        names: {names,mail}.names,
-        reservationStatus: reservationStatus.RESERVED,
-        reservationMail: {names,mail}.mail,
-        reservationEnds: Date.now(),
-    };*/
     const updatedItems = await service.setSeatsToReserved(dto);
     const response = {
         message: "Successful Reservation",
         updatedSeats: updatedItems,
     }
     let seatsToString: string = "";
-    dto.names.forEach((seat)=> seatsToString += ` ${seat}`); 
-    let mailDetails: mailDetails = reservationService.createMailDetails(dto.mail,"successful reservation","successful reservation for the following seats" + seatsToString);
+    dto.names.forEach((seat)=> seatsToString += ` ${seat}`);
+    const MAIL_SUBJECT: string = "successful reservation";
+    const MAIL_MESSAGE: string = "successful reservation for the following seats" + seatsToString;
+    let mailDetails: mailDetails = reservationService.createMailDetails(dto.mail, MAIL_SUBJECT, MAIL_MESSAGE);
     try{
         await reservationService.sendMail(mailDetails);
         res.json(response);
@@ -73,8 +64,5 @@ router.patch('/finish-reservation',async (req:Request, res: Response) => {
     }
         
     });
-
-    
-
 
 export default router;
