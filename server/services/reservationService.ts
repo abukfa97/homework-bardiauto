@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import mailDetails from '../model/mailDetailsInterface';
+import { getMail } from '../mailTemplate/successfulReservation';
 
 export default class ReservationService {
     private static instance : ReservationService;
@@ -34,6 +35,17 @@ export default class ReservationService {
             console.log(error);
         }
         return this.transporter.close();
+    }
+
+    createMailDetails(targetAddress: string, subject: string ,msg: string ): mailDetails{
+        const details: mailDetails = {
+            from: process.env.MAIL_SENDER,
+            to: targetAddress,
+            subject: subject,
+            text: msg,
+            html: getMail(msg)
+        }
+        return details;
     }
     
 }
