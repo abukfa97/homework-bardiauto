@@ -1,4 +1,4 @@
-const MAIL = (msg) => {
+function getMail (msg: string) {
     return `
     <!DOCTYPE html>
     <html>
@@ -52,6 +52,8 @@ const MAIL = (msg) => {
       </body>
     </html>
     `
-}
+}; 
 
-export default MAIL;
+export { 
+    getMail
+}
