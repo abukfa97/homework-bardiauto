@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma, Seat, reservationStatus } from "@prisma/client";
+import { reservationDTO } from "../model/reservationDTO";
 
 const prisma = new PrismaClient();
 
@@ -49,5 +50,28 @@ export default class seatService{
             console.error(error);
             console.log(`Failed to delete element in db with the following name ${data.name}`);
         }
+    }
+
+    async setSeatsToReserved(data: reservationDTO){
+        try{
+            let result: Seat[] = [];
+            data.names.forEach(async (seatName) => {
+                result.push(
+                    await prisma.seat.update({
+                    where: {
+                        name: seatName
+                    },
+                    data: {
+                        reservationStatus: reservationStatus.RESERVED,
+                        reservationMail: data.mail,
+                        reservationEnds: new Date(),
+                    }
+                }));
+            });
+            return result;
+        }catch(error){
+            console.error(error);
+            console.log('Failed to update seat(s) in database!');
+        } 
     }
 }
