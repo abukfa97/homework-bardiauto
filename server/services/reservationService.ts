@@ -7,7 +7,7 @@ export default class ReservationService {
     private transporter!: nodemailer.Transporter;
 
     constructor() {}
-    getInstance(){
+    static getInstance(){
         if(!ReservationService.instance){
             ReservationService.instance = new ReservationService();
         }

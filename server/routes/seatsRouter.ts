@@ -6,7 +6,7 @@ import { reservationDTO } from '../model/reservationDTO';
 
 
 const router: Router = express.Router();
-const service: seatService = new seatService();
+const service: seatService = seatService.getInstance();
 const reservationService: ReservationService = ReservationService.getInstance();
 
 router.get('/', async (req: Request, res: Response)=> {

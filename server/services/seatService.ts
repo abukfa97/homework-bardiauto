@@ -4,7 +4,15 @@ import seatInputDTO from "../model/seatInputDTO";
 
 export default class seatService{
     private static prisma: PrismaClient = new PrismaClient();
+    private static seatService: seatService;
     constructor(){}
+
+    static getInstance(){
+        if(!this.seatService){
+            this.seatService = new seatService();
+        }
+        return this.seatService;
+    }
 
     async getAllSeats(): Promise<Seat[]>{
         try{
