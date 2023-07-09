@@ -12,7 +12,7 @@ datasource db {
 
 model Seat {
   id Int @id @default(autoincrement())
-  name String
+  name String @unique
   reservationStatus reservationStatus @default(IN_PROGRESS) @map("reservation_status")
   reservationMail String? @map("reservation_mail")
   reservationStarts DateTime @default(now()) @map("reservation_starts")
