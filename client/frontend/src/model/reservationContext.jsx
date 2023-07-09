@@ -13,4 +13,8 @@ const ReservationProvider =  ({children}) => {
     const increaseSeatCount = () => {
         setReservation({...reservation, seatCounter: seatCounter+1});
     }
+
+    const decreaseSeatCount = () => {
+        setReservation({...reservation, seatCounter: seatCounter > 0 ? seatCounter-1 : 0});
+    }
 }
