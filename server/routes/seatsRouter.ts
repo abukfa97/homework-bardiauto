@@ -1,5 +1,5 @@
 import express, {Router, Request, Response, response} from 'express';
-import {deleteSeat, getAllSeats, saveNewSeat} from '../services/userService';
+import {deleteSeat, getAllSeats, saveNewSeat} from '../services/seatService';
 
 const router: Router = express.Router();
 
