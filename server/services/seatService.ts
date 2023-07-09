@@ -1,11 +1,6 @@
 import { PrismaClient, Prisma, Seat, reservationStatus } from "@prisma/client";
 import { reservationDTO } from "../model/reservationDTO";
-
-const prisma = new PrismaClient();
-
-interface seatInputDTO{
-    name: string
-}
+import seatInputDTO from "../model/seatInputDTO";
 
 export default class seatService{
     private static prisma: PrismaClient = new PrismaClient();
@@ -13,7 +8,7 @@ export default class seatService{
 
     async getAllSeats(): Promise<Seat[]>{
         try{
-            const seats : Seat[] = await prisma.seat.findMany();
+            const seats : Seat[] = await seatService.prisma.seat.findMany();
             return seats;
         } catch (error) {
             console.error(error);
@@ -21,16 +16,14 @@ export default class seatService{
         }
     }
 
-
-
     async saveNewSeat(data: seatInputDTO){
         try{
-            let isExistingSeat: Boolean = await prisma.seat.count({
+            let isExistingSeat: Boolean = await seatService.prisma.seat.count({
                 where:{
                     name: data.name,
                 }}) !== 0;
             if (!isExistingSeat){
-                let newSeat = await prisma.seat.create({data});
+                let newSeat = await seatService.prisma.seat.create({data});
                 return newSeat;
             } else throw new Error("Seat is already existing in the db");   
         } catch (error) {
@@ -41,7 +34,7 @@ export default class seatService{
 
     async deleteSeat(data: seatInputDTO){
         try{
-            await prisma.seat.deleteMany({
+            await seatService.prisma.seat.deleteMany({
                 where: {
                     name: data.name,
                 }
@@ -57,7 +50,7 @@ export default class seatService{
             let result: Seat[] = [];
             data.names.forEach(async (seatName) => {
                 result.push(
-                    await prisma.seat.update({
+                    await seatService.prisma.seat.update({
                     where: {
                         name: seatName
                     },
