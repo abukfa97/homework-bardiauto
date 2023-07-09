@@ -24,16 +24,18 @@ export default class seatService{
         }
     }
 
+    async isExistingSeat(data: seatInputDTO){
+        let isExistingSeat: Boolean = await seatService.prisma.seat.count({
+            where:{
+                name: data.name,
+            }}) !== 0;
+        return isExistingSeat;    
+    }
+
     async saveNewSeat(data: seatInputDTO){
         try{
-            let isExistingSeat: Boolean = await seatService.prisma.seat.count({
-                where:{
-                    name: data.name,
-                }}) !== 0;
-            if (!isExistingSeat){
-                let newSeat = await seatService.prisma.seat.create({data});
-                return newSeat;
-            } else throw new Error("Seat is already existing in the db");   
+            let newSeat = await seatService.prisma.seat.create({data});
+            return newSeat;
         } catch (error) {
             console.error(error);
             console.log("Failed to create element in the db");

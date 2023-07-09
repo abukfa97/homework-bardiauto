@@ -19,6 +19,19 @@ router.get('/', async (req: Request, res: Response)=> {
     }
 });
 
+router.get('/isExists',async (req:Request,res:Response) => {
+    const {name} = req.body;
+    try{
+        const isExist = await service.isExistingSeat({name});
+        res.json(isExist);
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+})
+
+
+
 router.post('/', async (req: Request, res: Response)=> {
     const {name} = req.body;
     try{
