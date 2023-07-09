@@ -39,7 +39,7 @@ export default class ReservationService {
 
     createMailDetails(targetAddress: string, subject: string ,msg: string ): mailDetails{
         const details: mailDetails = {
-            from: process.env.MAIL_SENDER,
+            from: process.env.MAIL_SENDER ? process.env.MAIL_SENDER : "",
             to: targetAddress,
             subject: subject,
             text: msg,
