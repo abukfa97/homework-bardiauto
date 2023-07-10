@@ -14,8 +14,6 @@ export default class seatService{
     async isExistingSeat(seatName){
         try{
             let response = await axios.get(`/api/seats/isExists/${seatName}`);
-
-            console.log(response.data);
             return response.data;
         }catch(error){
             console.error(error);
