@@ -1,6 +1,6 @@
 import express, {Router, Request, Response, response} from 'express';
 import seatService from '../services/seatService';
-import ReservationService from '../services/reservationService';
+import MailService from '../services/mailService';
 import mailDetails from '../model/mailDetailsInterface';
 import { reservationDTO } from '../model/reservationDTO';
 import seatInputDTO from '../model/seatInputDTO';
@@ -8,7 +8,7 @@ import seatInputDTO from '../model/seatInputDTO';
 
 const router: Router = express.Router();
 const service: seatService = seatService.getInstance();
-const reservationService: ReservationService = ReservationService.getInstance();
+const mailService: MailService = MailService.getInstance();
 
 router.get('/', async (req: Request, res: Response)=> {
     try{
@@ -23,7 +23,6 @@ router.get('/', async (req: Request, res: Response)=> {
 
 router.get('/isExists/:name',async (req:Request,res:Response) => {
     const {name} = req.params;
-    console.log(`'${name}'`);
     try{
         const isExist = await service.isExistingSeat({name});
         console.log(isExist);
@@ -70,9 +69,9 @@ router.patch('/finish-reservation',async (req:Request, res: Response) => {
     dto.names.forEach((seat)=> seatsToString += ` ${seat}`);
     const MAIL_SUBJECT: string = "successful reservation";
     const MAIL_MESSAGE: string = "successful reservation for the following seats" + seatsToString;
-    let mailDetails: mailDetails = reservationService.createMailDetails(dto.mail, MAIL_SUBJECT, MAIL_MESSAGE);
+    let mailDetails: mailDetails = mailService.createMailDetails(dto.mail, MAIL_SUBJECT, MAIL_MESSAGE);
     try{
-        await reservationService.sendMail(mailDetails);
+        await mailService.sendMail(mailDetails);
         res.json(response);
     }catch(error){
         console.error(error);

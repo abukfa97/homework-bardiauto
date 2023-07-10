@@ -2,16 +2,16 @@ import nodemailer from 'nodemailer';
 import mailDetails from '../model/mailDetailsInterface';
 import { getMail } from '../mailTemplate/successfulReservation';
 
-export default class ReservationService {
-    private static instance : ReservationService;
+export default class MailService {
+    private static instance : MailService;
     private transporter!: nodemailer.Transporter;
 
     constructor() {}
     static getInstance(){
-        if(!ReservationService.instance){
-            ReservationService.instance = new ReservationService();
+        if(!MailService.instance){
+            MailService.instance = new MailService();
         }
-        return ReservationService.instance;
+        return MailService.instance;
     }
 
     private createConnection(){
