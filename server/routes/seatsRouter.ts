@@ -3,6 +3,7 @@ import seatService from '../services/seatService';
 import ReservationService from '../services/reservationService';
 import mailDetails from '../model/mailDetailsInterface';
 import { reservationDTO } from '../model/reservationDTO';
+import seatInputDTO from '../model/seatInputDTO';
 
 
 const router: Router = express.Router();
@@ -19,10 +20,13 @@ router.get('/', async (req: Request, res: Response)=> {
     }
 });
 
-router.get('/isExists',async (req:Request,res:Response) => {
-    const {name} = req.body;
+
+router.get('/isExists/:name',async (req:Request,res:Response) => {
+    const {name} = req.params;
+    console.log(`'${name}'`);
     try{
         const isExist = await service.isExistingSeat({name});
+        console.log(isExist);
         res.json(isExist);
     }catch(error){
         console.error(error);
